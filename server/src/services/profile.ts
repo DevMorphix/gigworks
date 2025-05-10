@@ -63,6 +63,7 @@ export const createProfile = async (data: Profile) => {
         .values({
           ...data,
           partner_id: partnerData ? partnerData[0].id : null,
+          location: JSON.stringify(data.location),
         })
         .returning();
 

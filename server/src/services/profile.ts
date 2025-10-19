@@ -13,6 +13,7 @@ import {
   category,
   subCategory,
   subCategoryOption,
+  testimonial,
 } from "../config/database/schema";
 import { User, Profile, SubCategory } from "../config/database/interfaces";
 import { removeFields } from "../utils/helpers";
@@ -153,8 +154,8 @@ export const updateProfile = async (id: string, data: Profile) => {
 
 // Get all profiles by category id with pagination
 export const getProfilesByCategory = async (
-  category_id: any,
-  category_name: any,
+  category_id: string | null | undefined,
+  category_name: string | null | undefined,
   page: number,
   limit: number,
   search: string
@@ -184,6 +185,24 @@ export const getProfilesByCategory = async (
             (page - 1) * limit
     */
 
+      // Build conditions array for dynamic WHERE clause
+      const conditions = [
+        sql`${profile.status} = 1`,
+        sql`${category.status} = 1`
+      ];
+
+      if (category_id && category_id.trim() !== '') {
+        conditions.push(sql`${profile.category_id} = ${category_id}`);
+      }
+
+      if (category_name && category_name.trim() !== '') {
+        conditions.push(sql`${category.name} LIKE ${"%" + category_name + "%"}`);
+      }
+
+      if (search && search.trim() !== '') {
+        conditions.push(sql`${profile.name} LIKE ${"%" + search + "%"}`);
+      }
+
       let results = await db
         .select({
           name: profile.name,
@@ -194,15 +213,7 @@ export const getProfilesByCategory = async (
         })
         .from(profile)
         .leftJoin(category, sql`${category.id} = ${profile.category_id}`)
-        .where(
-          sql`
-            ${category_id ? sql`${profile.category_id} = ${category_id}` : sql`TRUE`} AND 
-            ${category_name ? sql`${category.name} LIKE ${"%" + category_name + "%"}` : sql`TRUE`} AND
-            ${profile.name} LIKE ${"%" + search + "%"} AND 
-            ${profile.status} = 1 AND
-            ${category.status} = 1
-          `
-        )
+        .where(sql.join(conditions, sql` AND `))
         .limit(limit)
         .offset((page - 1) * limit)
         .orderBy(profile.name, "ASC");
@@ -211,9 +222,16 @@ export const getProfilesByCategory = async (
         // ${category_id ? sql`${profile.category_id} = ${category_id}` : sql`TRUE`} AND
         // ${search ? sql`${profile.name} LIKE ${"%" + search + "%"}` : sql`TRUE`} AND
 
+      // Get count with same filters
+      const countResult = await db
+        .select({ count: sql`COUNT(*)` })
+        .from(profile)
+        .leftJoin(category, sql`${category.id} = ${profile.category_id}`)
+        .where(sql.join(conditions, sql` AND `));
+
       resolve({
         data: results,
-        count: await db.$count(profile),
+        count: countResult[0].count,
       });
     } catch (error) {
       reject(error);
@@ -492,7 +510,7 @@ export const getProfileBySlug = async (slug: string) => {
         return;
       }
 
-      const [licenses, media, tags] = await Promise.all([
+      const [licenses, media, tags, testimonials] = await Promise.all([
         /*
           SELECT 
               license_type.name, 
@@ -543,9 +561,24 @@ export const getProfileBySlug = async (slug: string) => {
           .from(profileTag)
           .where(sql`${profileTag.profile_id} = ${profileResult.profile.id}`)
           .all(),
+
+        // SQL Query : SELECT * FROM testimonial WHERE profile_id = profileResult.profile.id
+        
+        db
+          .select({
+            userDetails: testimonial.userDetails,
+            rating: testimonial.rating,
+            comment: testimonial.comment
+          })
+          .from(testimonial)
+          .where(sql`
+            ${testimonial.profile_id} = ${profileResult.profile.id} AND 
+            ${testimonial.status} = 1
+          `)
+          .all(),
       ]);
 
-      let data = { ...profileResult, licenses, media, tags };
+      let data = { ...profileResult, licenses, media, tags, testimonials };
       data.profile.operating_hours = JSON.parse(data.profile.operating_hours);
       data.profile.socials = JSON.parse(data.profile.socials);
 

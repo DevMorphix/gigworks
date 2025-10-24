@@ -189,6 +189,8 @@ export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => 
       mode: "cors",
       headers: {
         "Content-Type": file.type,
+        'x-amz-acl': 'public-read'
+
       },
       body: file,
     });

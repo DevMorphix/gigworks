@@ -29,6 +29,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         category: category
       });
 
+      // Ensure we have a presigned URL before attempting upload
+      if (!urlResponse.presignedUrl) {
+        throw new Error('Presigned URL not returned from server');
+      }
+
       // Upload to storage
       await uploadToPresignedUrl(urlResponse.presignedUrl, file);
 

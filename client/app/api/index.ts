@@ -70,7 +70,7 @@ interface GetURLResponse {
   message: string;
   data: {
     assetPath: string;
-    uploadUrl: string;   // Use this for uploading
+    presignedUrl: string;   // Use this for uploading
     publicUrl: string;   // Use this for displaying
   };
   // Backward compatibility (optional)
@@ -81,7 +81,7 @@ interface GetURLResponse {
 
 interface GetURLParams {
   type: string;      // e.g., "image/jpeg"
-  category: string;  // e.g., "avatar", "banner", etc.
+  category: 'identity' | 'avatar' | 'license' | 'banner' | 'media';  // e.g., "avatar", "banner", etc.
 }
 
 export const GetURL = async (params: GetURLParams): Promise<GetURLResponse> => {

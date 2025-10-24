@@ -67,12 +67,21 @@ interface GetURLParams {
 
 // Update the response interface to match the expected structure
 interface GetURLResponse {
+  message: string;
   data: {
-    presignedUrl: string;
     assetPath: string;
+    uploadUrl: string;   // Use this for uploading
+    publicUrl: string;   // Use this for displaying
   };
-  presignedUrl: string;  // Add this
-  assetpath: string;     // Add this
+  // Backward compatibility (optional)
+  presignedUrl?: string;
+  assetpath?: string;
+  publicUrl?: string;
+}
+
+interface GetURLParams {
+  type: string;      // e.g., "image/jpeg"
+  category: string;  // e.g., "avatar", "banner", etc.
 }
 
 export const GetURL = async (params: GetURLParams): Promise<GetURLResponse> => {
@@ -86,12 +95,26 @@ export const GetURL = async (params: GetURLParams): Promise<GetURLResponse> => {
         }
       }
     );
-    // Transform the response to match both interfaces
+    
+    // Log the response data
+    console.log('API Response:', response.data.data);
+    console.log(response.data.data.uploadUrl);
+  
+    // Transform the response to match GetURLResponse interface
     return {
-      ...response.data,
-      presignedUrl: response.data.data.presignedUrl,
-      assetpath: response.data.data.assetPath
+      message: response.data.message,
+      data: {
+        assetPath: response.data.data.assetPath,
+        presignedUrl: response.data.data.uploadUrl,   // For uploading
+        publicUrl: response.data.data.publicUrl    // For displaying
+      },
+      // Also include at top level for backward compatibility
+      presignedUrl: response.data.data.uploadUrl,
+      assetpath: response.data.data.assetPath,
+      publicUrl: response.data.data.publicUrl
     };
+    
+    
   } catch (error) {
     console.error('Error getting presigned URL:', error);
     throw error;  
@@ -157,6 +180,10 @@ interface BusinessProfile {
 
 export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => {
   try {
+
+    console.log("presign",presignedUrl);
+    console.log(file);
+    
     const response = await fetch(presignedUrl, {
       method: "PUT",
       mode: "cors",
@@ -166,6 +193,7 @@ export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => 
       body: file,
     });
 
+    console.log('Upload Response:', response);
     if (!response.ok) {
       throw new Error(`Upload failed: ${response.statusText}`);
     }

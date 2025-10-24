@@ -10,6 +10,8 @@ import SubCategoryOptions from '../views/subCategoryOptions.vue'
 import licenseTypes from '../views/licenseTypes.vue'
 import partners from '../views/Partners.vue'
 import ManageAdmin from '../views/ManageAdmin.vue'
+// import test from '../views/test.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -93,7 +95,15 @@ const router = createRouter({
       meta: {
         title: 'Login',
       },
-    }
+    },
+    // {
+    //   path: '/test',
+    //   name: 'test',
+    //   component: test,
+    //   meta: {
+    //     title: 'test',
+    //   },
+    // },
   ]
 })
 

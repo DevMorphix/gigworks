@@ -574,9 +574,15 @@ const handleFieldChange = (field: string, value: any) => {
       // Upload file to storage
       await uploadToPresignedUrl(uploadResponse.presignedUrl, newLicense.file);
 
+      // Ensure we have a valid asset path before creating the license payload
+      const assetpath = uploadResponse.assetpath;
+      if (!assetpath) {
+        throw new Error("Failed to retrieve uploaded asset path");
+      }
+
       // Create license with the correct structure
       const licenseData = {
-        url: uploadResponse.assetpath,
+        url: assetpath,
         number: newLicense.number,
         type_id: newLicense.name, // Assuming name field contains the type_id
       };

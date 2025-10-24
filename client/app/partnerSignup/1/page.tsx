@@ -83,22 +83,27 @@ const ProfileForm = () => {
         });
 
         // Use the flattened properties from the response
-        const uploadResult: UploadResponse = {
-          presignedUrl: response.presignedUrl,
-          assetpath: response.assetpath
-        };
-
-        // ...rest of file upload logic...
-        // console.log('GetURL Response:', uploadResult);
-        // console.log('Asset Path:', uploadResult.assetpath);
-
-        axios.put(uploadResult.presignedUrl, file, {
-          headers: {
-            'Content-Type': file.type,
-          }
-        }).then(() => {
-          console.log('File upload initiated for:', uploadResult.assetpath);
-        });
+                const uploadResult: UploadResponse = {
+                  presignedUrl: response.presignedUrl ?? '',
+                  assetpath: response.assetpath ?? ''
+                };
+        
+                // Ensure we have a valid presigned URL before attempting upload
+                if (!uploadResult.presignedUrl) {
+                  throw new Error('Presigned URL missing from upload response');
+                }
+        
+                // ...rest of file upload logic...
+                // console.log('GetURL Response:', uploadResult);
+                // console.log('Asset Path:', uploadResult.assetpath);
+        
+                axios.put(uploadResult.presignedUrl, file, {
+                  headers: {
+                    'Content-Type': file.type,
+                  }
+                }).then(() => {
+                  console.log('File upload initiated for:', uploadResult.assetpath);
+                });
 
         setFormData(prev => {
           const newData = {

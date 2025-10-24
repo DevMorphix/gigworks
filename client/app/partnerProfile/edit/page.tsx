@@ -79,7 +79,8 @@ const EditPartner = () => {
     fetchPartner();
   }, []);
 
-  const handleFieldChange = (field: string, value: string) => {
+  const handleFieldChange = (field: string, value?: string) => {
+    if (value === undefined) return;
     if (partner) {
       setPartner({
         ...partner,

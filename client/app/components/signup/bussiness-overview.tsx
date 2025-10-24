@@ -257,7 +257,8 @@ export default function BusinessOverview({
         type: "image/jpeg",
         category: category as "avatar" | "identity",
       });
-
+      console.log("::::::::::::::", uploadResponse);
+      
       // Upload the file
       await uploadToPresignedUrl(uploadResponse.data.presignedUrl, croppedFile);
 

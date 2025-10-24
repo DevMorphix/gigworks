@@ -8,6 +8,23 @@ import { User, Admin, TokenTable } from "../config/database/interfaces";
 
 
 
+/**
+ * Env describes required environment values used across this module.
+ * Adjust shape as needed to match your actual runtime environment.
+ */
+export interface Env {
+    JWT_TOKEN_SECRET: string;
+    JWT_TOKEN_EXPIRY: string | number;
+    KV_STORE?: {
+        get?: (key: string) => Promise<string | null>;
+        put?: (key: string, value: string) => Promise<void>;
+        delete?: (key: string) => Promise<void>;
+        list?: () => Promise<any>;
+    };
+}
+
+
+
 // Generate OTP and store it in KV store
 export const generateOTP = async (phone: string, env: any): Promise<string> => {
     return new Promise(async (resolve, reject) => {

@@ -67,21 +67,12 @@ interface GetURLParams {
 
 // Update the response interface to match the expected structure
 interface GetURLResponse {
-  message: string;
   data: {
+    presignedUrl: string;
     assetPath: string;
-    presignedUrl: string;   // Use this for uploading
-    publicUrl: string;   // Use this for displaying
   };
-  // Backward compatibility (optional)
-  presignedUrl?: string;
-  assetpath?: string;
-  publicUrl?: string;
-}
-
-interface GetURLParams {
-  type: string;      // e.g., "image/jpeg"
-  category: 'identity' | 'avatar' | 'license' | 'banner' | 'media';  // e.g., "avatar", "banner", etc.
+  presignedUrl: string;  // Add this
+  assetpath: string;     // Add this
 }
 
 export const GetURL = async (params: GetURLParams): Promise<GetURLResponse> => {
@@ -95,26 +86,12 @@ export const GetURL = async (params: GetURLParams): Promise<GetURLResponse> => {
         }
       }
     );
-    
-    // Log the response data
-    console.log('API Response:', response.data.data);
-    console.log(response.data.data.uploadUrl);
-  
-    // Transform the response to match GetURLResponse interface
+    // Transform the response to match both interfaces
     return {
-      message: response.data.message,
-      data: {
-        assetPath: response.data.data.assetPath,
-        presignedUrl: response.data.data.uploadUrl,   // For uploading
-        publicUrl: response.data.data.publicUrl    // For displaying
-      },
-      // Also include at top level for backward compatibility
-      presignedUrl: response.data.data.uploadUrl,
-      assetpath: response.data.data.assetPath,
-      publicUrl: response.data.data.publicUrl
+      ...response.data,
+      presignedUrl: response.data.data.presignedUrl,
+      assetpath: response.data.data.assetPath
     };
-    
-    
   } catch (error) {
     console.error('Error getting presigned URL:', error);
     throw error;  
@@ -180,22 +157,15 @@ interface BusinessProfile {
 
 export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => {
   try {
-
-    console.log("presign",presignedUrl);
-    console.log(file);
-    
     const response = await fetch(presignedUrl, {
       method: "PUT",
       mode: "cors",
       headers: {
         "Content-Type": file.type,
-        'x-amz-acl': 'public-read'
-
       },
       body: file,
     });
 
-    console.log('Upload Response:', response);
     if (!response.ok) {
       throw new Error(`Upload failed: ${response.statusText}`);
     }

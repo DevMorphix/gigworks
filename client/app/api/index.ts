@@ -166,7 +166,6 @@ export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => 
 
     const response = await fetch(presignedUrl, {
       method: "PUT",
-      mode: "cors",
       headers: {
         "Content-Type": file.type,
       },

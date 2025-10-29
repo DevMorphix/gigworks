@@ -157,6 +157,13 @@ interface BusinessProfile {
 
 export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => {
   try {
+    console.log("Upload details:", {
+      url: presignedUrl,
+      fileType: file.type,
+      fileName: file.name,
+      fileSize: file.size
+    });
+
     const response = await fetch(presignedUrl, {
       method: "PUT",
       mode: "cors",
@@ -166,7 +173,12 @@ export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => 
       body: file,
     });
 
+    console.log("Response status:", response.status);
+    console.log("Response headers:", [...response.headers.entries()]);
+
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Upload error response:", errorText);
       throw new Error(`Upload failed: ${response.statusText}`);
     }
 

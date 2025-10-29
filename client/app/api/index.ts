@@ -174,7 +174,11 @@ export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => 
     });
 
     console.log("Response status:", response.status);
-    console.log("Response headers:", [...response.headers.entries()]);
+    const headersObj: Record<string, string> = {};
+    response.headers.forEach((value, key) => {
+      headersObj[key] = value;
+    });
+    console.log("Response headers:", headersObj);
 
     if (!response.ok) {
       const errorText = await response.text();

@@ -163,16 +163,20 @@ export const uploadToPresignedUrl = async (presignedUrl: string, file: File) => 
       fileName: file.name,
       fileSize: file.size
     });
+     const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", file.name);
+
 
     const response = await fetch(presignedUrl, {
-      method: "PUT",
+      method: "POST",
       // headers: {
       //   "Content-Type": file.type,
       // },
-      body: file,
+      body: formData,
     });
 
-    console.log("Response status:", response.status);
+    console.log("Response status:", response);
     const headersObj: Record<string, string> = {};
     response.headers.forEach((value, key) => {
       headersObj[key] = value;

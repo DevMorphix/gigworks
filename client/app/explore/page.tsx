@@ -41,6 +41,7 @@ function ExplorePage() {
     const fetchData = async () => {
       try {
         const response = await fetchBusinessData({ hasBusiness: true });
+      
         // Ensure categories are in the correct format
         const validCategories =
           // response.data.businessCount > 0 &&

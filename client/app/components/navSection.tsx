@@ -29,13 +29,16 @@ const Navbar = () => {
             <Link href="/" className="text-black hover:animate-pulse">
               Home
             </Link>
-            <Link href="/" className="text-black hover:animate-pulse">
+            <Link href="/#partner" className="text-black hover:animate-pulse">
               Partner
             </Link>
-            <Link href="/" className="text-black hover:animate-pulse">
+            <Link href="/#about" className="text-black hover:animate-pulse">
               About Us
             </Link>
-            <Link href="/" className="text-black hover:animate-pulse">
+            <Link href="/faqs" className="text-black hover:animate-pulse">
+              FAQs
+            </Link>
+            <Link href="/#contact" className="text-black hover:animate-pulse">
               Contact
             </Link>
           </div>
@@ -71,13 +74,16 @@ const Navbar = () => {
             <Link href="/" className="block text-black hover:animate-pulse">
               Home
             </Link>
-            <Link href="/" className="block text-black hover:animate-pulse">
+            <Link href="/#partner" className="block text-black hover:animate-pulse">
               Partner
             </Link>
-            <Link href="/" className="block text-black hover:animate-pulse">
+            <Link href="/#about" className="block text-black hover:animate-pulse">
               About Us
             </Link>
-            <Link href="/" className="block text-black hover:animate-pulse">
+            <Link href="/faqs" className="block text-black hover:animate-pulse">
+              FAQs
+            </Link>
+            <Link href="/#contact" className="block text-black hover:animate-pulse">
               Contact
             </Link>
           </div>

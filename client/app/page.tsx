@@ -206,6 +206,12 @@ export default function GigWorkLandingPage() {
                     Blog
                   </Link>
                   <Link
+                    href="/faqs"
+                    className="text-white hover:text-green-500 transition"
+                  >
+                    FAQs
+                  </Link>
+                  <Link
                     href="#contact"
                     className="text-white hover:text-green-500 transition"
                   >
@@ -285,6 +291,12 @@ export default function GigWorkLandingPage() {
                   className="text-white hover:text-green-500 transition"
                 >
                   Partner
+                </Link>
+                <Link
+                  href="/faqs"
+                  className="text-white hover:text-green-500 transition"
+                >
+                  FAQs
                 </Link>
                 <Link
                   href="#contact"

@@ -10,6 +10,40 @@ import {
 import { FooterSection } from "../components/FooterSection";
 import Image from "next/image";
 import Navbar from "../components/navSection";
+import type { Metadata } from "next";
+
+// Metadata for SEO
+export const metadata: Metadata = {
+  title: "FAQs - Gigwork | WhatsApp-Based Service Directory in Kerala",
+  description: "Get answers to all your questions about Gigwork - Kerala's WhatsApp-based service directory. Find electricians, plumbers, AC technicians & more. Available 24/7, no app needed.",
+  keywords: "Gigwork FAQ, WhatsApp service directory Kerala, verified electricians Kerala, plumbers near me, AC repair Kerala, how Gigwork works, service providers Kerala",
+  openGraph: {
+    title: "Frequently Asked Questions - Gigwork Kerala",
+    description: "Everything you need to know about finding verified service providers in Kerala through WhatsApp. No app required, 24/7 availability.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "Gigwork",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FAQs - Gigwork | WhatsApp Service Directory Kerala",
+    description: "Get instant answers about using Gigwork to find verified electricians, plumbers, and service providers across Kerala via WhatsApp.",
+  },
+  alternates: {
+    canonical: "https://gigwork.co.in/faqs",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 
 
 // Navbar Component
@@ -203,28 +237,42 @@ interface FAQItemProps {
 
 const FAQItem = ({ question, answer, isOpen, toggle }: FAQItemProps) => {
   return (
-    <div className="border border-gray-200 rounded-lg mb-4 overflow-hidden hover:shadow-md transition">
+    <article 
+      className="border border-gray-200 rounded-lg mb-4 overflow-hidden hover:shadow-md transition"
+      itemScope 
+      itemType="https://schema.org/Question"
+    >
       <button
         onClick={toggle}
         className="w-full flex justify-between items-center p-5 text-left bg-white hover:bg-gray-50 transition"
+        aria-expanded={isOpen}
+        aria-controls={`answer-${question.replace(/\s+/g, '-').toLowerCase()}`}
       >
-        <span className="font-semibold text-gray-800 pr-4">{question}</span>
+        <span className="font-semibold text-gray-800 pr-4" itemProp="name">{question}</span>
         <ChevronDown
           size={20}
           className={`text-green-600 flex-shrink-0 transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
+          aria-hidden="true"
         />
       </button>
       {isOpen && (
-        <div className="p-5 bg-gray-50 border-t border-gray-200">
+        <div 
+          id={`answer-${question.replace(/\s+/g, '-').toLowerCase()}`}
+          className="p-5 bg-gray-50 border-t border-gray-200"
+          itemProp="acceptedAnswer"
+          itemScope
+          itemType="https://schema.org/Answer"
+        >
           <div
             className="text-gray-700 leading-relaxed"
+            itemProp="text"
             dangerouslySetInnerHTML={{ __html: answer }}
           />
         </div>
       )}
-    </div>
+    </article>
   );
 };
 
@@ -233,6 +281,23 @@ const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+
+  // Generate FAQ Schema.org structured data for SEO
+  const generateFAQSchema = () => {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer.replace(/<[^>]*>/g, '') // Strip HTML for schema
+        }
+      }))
+    };
+    return faqSchema;
+  };
 
   const categories = [
     { id: "all", name: "All Questions" },
@@ -376,76 +441,115 @@ const FAQPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
+    <>
+      {/* Add JSON-LD structured data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema()) }}
+      />
+      
+      {/* Organization Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Gigwork",
+            "url": "https://gigwork.co.in",
+            "logo": "https://gigwork.co.in/assets/media/gigworksblk.svg",
+            "description": "Kerala's WhatsApp-based service directory connecting customers with verified electricians, plumbers, AC technicians, and more.",
+            "telephone": "+91-85900-12027",
+            "areaServed": {
+              "@type": "State",
+              "name": "Kerala"
+            },
+            "sameAs": [
+              "https://instagram.com/gigwork.co.in",
+              "https://blog.gigwork.co.in"
+            ]
+          })
+        }}
+      />
 
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-xl text-green-100 max-w-3xl">
-            Everything you need to know about Gigwork - Kerala's WhatsApp-based
-            service directory
-          </p>
-        </div>
-      </div>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
 
-      {/* Search Bar */}
-      <div className="max-w-4xl mx-auto px-4 -mt-8">
-        <div className="bg-white rounded-lg shadow-lg p-4">
-          <input
-            type="text"
-            placeholder="Search for answers..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
-      </div>
+        {/* Hero Section */}
+        <header className="bg-gradient-to-r from-green-600 to-green-700 text-white py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Frequently Asked Questions
+            </h1>
+            <p className="text-xl text-green-100 max-w-3xl">
+              Everything you need to know about Gigwork - Kerala's WhatsApp-based
+              service directory
+            </p>
+          </div>
+        </header>
 
-      {/* Category Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <div className="flex flex-wrap gap-2 justify-center mb-8">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 rounded-full transition ${
-                activeCategory === cat.id
-                  ? "bg-green-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
+        {/* Search Bar */}
+        <div className="max-w-4xl mx-auto px-4 -mt-8">
+          <div className="bg-white rounded-lg shadow-lg p-4">
+            <label htmlFor="faq-search" className="sr-only">
+              Search for answers
+            </label>
+            <input
+              id="faq-search"
+              type="search"
+              placeholder="Search for answers..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              aria-label="Search frequently asked questions"
+            />
+          </div>
         </div>
 
-        {/* FAQ List */}
-        <div className="max-w-4xl mx-auto mb-16">
-          {filteredFAQs.length > 0 ? (
-            filteredFAQs.map((faq, index) => (
-              <FAQItem
-                key={index}
-                question={faq.question}
-                answer={faq.answer}
-                isOpen={openIndex === index}
-                toggle={() => toggleFAQ(index)}
-              />
-            ))
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
-                No questions found matching your search.
-              </p>
-            </div>
-          )}
-        </div>
+        {/* Category Filters */}
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12" aria-label="FAQ categories">
+          <div className="flex flex-wrap gap-2 justify-center mb-8">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-4 py-2 rounded-full transition ${
+                  activeCategory === cat.id
+                    ? "bg-green-600 text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-100"
+                }`}
+                aria-pressed={activeCategory === cat.id}
+                aria-label={`Filter by ${cat.name}`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+
+          {/* FAQ List */}
+          <section className="max-w-4xl mx-auto mb-16" aria-label="Frequently asked questions">
+            {filteredFAQs.length > 0 ? (
+              filteredFAQs.map((faq, index) => (
+                <FAQItem
+                  key={index}
+                  question={faq.question}
+                  answer={faq.answer}
+                  isOpen={openIndex === index}
+                  toggle={() => toggleFAQ(index)}
+                />
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">
+                  No questions found matching your search.
+                </p>
+              </div>
+            )}
+          </section>
+        </nav>
 
         {/* Still Have Questions Section */}
-        <div className="max-w-4xl mx-auto mb-16">
+        <aside className="max-w-4xl mx-auto mb-16">
           <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               Still have questions?
@@ -460,24 +564,26 @@ const FAQPage = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition"
+                aria-label="Chat with us on WhatsApp"
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={20} aria-hidden="true" />
                 WhatsApp Chat
               </a>
               <a
                 href="tel:+917306104563"
                 className="inline-flex items-center justify-center gap-2 bg-white text-green-600 border-2 border-green-600 px-6 py-3 rounded-lg hover:bg-green-50 transition"
+                aria-label="Call support at +91 73061 04563"
               >
-                <Phone size={20} />
+                <Phone size={20} aria-hidden="true" />
                 Call Support
               </a>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
 
       <FooterSection />
-    </div>
+    </>
   );
 };
 

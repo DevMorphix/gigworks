@@ -145,17 +145,153 @@ export default function GigWorkLandingPage() {
     );
   }
 
+  // Generate structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://gigwork.co.in/#organization",
+        "name": "Gigwork",
+        "url": "https://gigwork.co.in",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://gigwork.co.in/assets/media/gigworks.svg",
+          "width": 200,
+          "height": 60
+        },
+        "description": "Kerala's leading WhatsApp-based business directory connecting customers with verified professionals including electricians, plumbers, AC technicians, and more.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kottayam",
+          "addressRegion": "Kerala",
+          "addressCountry": "IN"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91-85900-12027",
+            "contactType": "Customer Service",
+            "availableLanguage": ["en", "ml"]
+          },
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91-73061-04563",
+            "contactType": "Technical Support",
+            "availableLanguage": ["en", "ml"]
+          }
+        ],
+        "sameAs": [
+          "https://instagram.com/gigwork.co.in",
+          "https://blog.gigwork.co.in"
+        ],
+        "areaServed": {
+          "@type": "State",
+          "name": "Kerala"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://gigwork.co.in/#website",
+        "url": "https://gigwork.co.in",
+        "name": "Gigwork",
+        "description": "Find verified professionals and skilled service providers through WhatsApp in Kerala",
+        "publisher": {
+          "@id": "https://gigwork.co.in/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://gigwork.co.in/explore?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://gigwork.co.in/#localbusiness",
+        "name": "Gigwork",
+        "image": "https://gigwork.co.in/assets/media/gigworks.svg",
+        "priceRange": "₹₹",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Kottayam",
+          "addressRegion": "Kerala",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "9.5916",
+          "longitude": "76.5222"
+        },
+        "url": "https://gigwork.co.in",
+        "telephone": "+91-85900-12027",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "17:00"
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "serviceType": "Business Directory Service",
+        "provider": {
+          "@id": "https://gigwork.co.in/#organization"
+        },
+        "areaServed": {
+          "@type": "State",
+          "name": "Kerala"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Service Provider Categories",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Electrician Services"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Plumbing Services"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "AC Repair Services"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  };
+
   return (
-    <div className=" min-h-screen bg-black text-white overflow-x-hidden">
-      {/* Single LoginPopup instance at the root level */}
-      <LoginPopup
-        isOpen={isLoginPopupOpen}
-        onClose={() => {
-          setIsLoginPopupOpen(false);
-          setRedirectPath(undefined);
-        }}
-        // redirectAfterLogin={redirectPath}
+    <>
+      {/* Add JSON-LD structured data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+      
+      <div className=" min-h-screen bg-black text-white overflow-x-hidden">
+        {/* Single LoginPopup instance at the root level */}
+        <LoginPopup
+          isOpen={isLoginPopupOpen}
+          onClose={() => {
+            setIsLoginPopupOpen(false);
+            setRedirectPath(undefined);
+          }}
+          // redirectAfterLogin={redirectPath}
+        />
 
       {/* Navbar */}
       <nav
@@ -204,6 +340,12 @@ export default function GigWorkLandingPage() {
                     className="text-white hover:text-green-500 transition"
                   >
                     Blog
+                  </Link>
+                  <Link
+                    href="/faqs"
+                    className="text-white hover:text-green-500 transition"
+                  >
+                    FAQs
                   </Link>
                   <Link
                     href="#contact"
@@ -287,6 +429,12 @@ export default function GigWorkLandingPage() {
                   Partner
                 </Link>
                 <Link
+                  href="/faqs"
+                  className="text-white hover:text-green-500 transition"
+                >
+                  FAQs
+                </Link>
+                <Link
                   href="#contact"
                   className="text-white hover:text-green-500 transition"
                 >
@@ -307,16 +455,16 @@ export default function GigWorkLandingPage() {
           <AnimatedGridPattern className="absolute inset-0 w-full max-h-screen z-10 opacity-80" />
 
           {/* Hero Section */}
-          <section className="container mx-auto md:px-16 py-16 flex h-screen flex-col md:flex-row items-center relative z-10 px-4">
+          <section className="container mx-auto md:px-16 py-16 flex h-screen flex-col md:flex-row items-center relative z-10 px-4" aria-label="Hero section">
             <div className="lg:w-1/2 mb-8 lg:mb-0 xl:pl-16">
               <div className="lg:hidden block mb-[67px]">
                 <SearchSection />
               </div>
               <h1 className="text-3xl lg:text-6xl font-bold mb-4">
-                Take Your Business to the Next Level with <br></br>
-                <div className="mt-2">
+                Take Your Business to the Next Level with <br />
+                <span className="block mt-2">
                   <span className="text-green-500 md:text-7xl ">WhatsApp!</span>
-                </div>
+                </span>
               </h1>
               <p className="text-gray-400 mb-2 font-light text-justify">
                 Connect, communicate, and grow your business with WhatsApp—on a
@@ -511,11 +659,12 @@ export default function GigWorkLandingPage() {
           className=" container mx-auto px-4 py-16 flex flex-col items-center justify-center"
           id="about"
           style={{ scrollMarginTop: "100px" }}
+          aria-labelledby="about-heading"
         >
-          <h2 className="text-4xl text-center text-black font-bold mb-2 ">
+          <h2 id="about-heading" className="text-4xl text-center text-black font-bold mb-2 ">
             Get to Know<span className="text-green-600"> GigWork</span>
           </h2>
-          <hr className="w-1/4 mb-4 h-1 border-0 opacity-100 bg-gradient-to-l from-transparent to-green-500 rounded-lg" />
+          <hr className="w-1/4 mb-4 h-1 border-0 opacity-100 bg-gradient-to-l from-transparent to-green-500 rounded-lg" aria-hidden="true" />
           <p className="text-black mb-8 lg:px-52 text-center text-xl ">
             Welcome to <span className="text-green-600 font-bold">GigWork</span>
             , the ultimate online business directory accessible through
@@ -524,10 +673,10 @@ export default function GigWorkLandingPage() {
             designed to make discovering services, products, and businesses in
             your area easier than ever.
           </p>
-          <h2 className="text-4xl text-black font-bold mb-2 text-center ">
+          <h3 className="text-4xl text-black font-bold mb-2 text-center ">
             Clients{" "}
             <span className="text-white bg-green-600 pr-3">Onboarded</span>
-          </h2>
+          </h3>
           <NumberTicker value={count} />
           <div className="flex justify-center">
             <MissionSwiper />
@@ -554,9 +703,10 @@ export default function GigWorkLandingPage() {
         className="bg-black py-16 relative z-10"
         id="partner"
         style={{ scrollMarginTop: "80px" }}
+        aria-labelledby="partner-heading"
       >
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">
+          <h2 id="partner-heading" className="text-3xl font-bold mb-8">
             Join Our <span className="text-green-600">Community</span>
           </h2>
           <p className="text-white text-xl mb-8 lg:px-52">
@@ -586,11 +736,12 @@ export default function GigWorkLandingPage() {
 
       <section
         className="bg-black py-16 px-4 relative z-10 flex justify-center"
-        id="partner"
+        id="pricing"
         style={{ scrollMarginTop: "80px" }}
+        aria-labelledby="pricing-heading"
       >
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8 ">
+          <h2 id="pricing-heading" className="text-3xl font-bold mb-8 ">
             Our <span className="text-green-600 ">Pricing</span>
           </h2>
           <div className="w-full flex flex-col items-center justify-center text-left">
@@ -724,11 +875,12 @@ export default function GigWorkLandingPage() {
           id="contact"
           className="container bg-cbg mx-auto px-3 md:px-[42px] py-16 flex flex-col items-center"
           style={{ scrollMarginTop: "100px" }}
+          aria-labelledby="contact-heading"
         >
-          <h2 className="text-3xl font-bold mb-8 ">
+          <h2 id="contact-heading" className="text-3xl font-bold mb-8 ">
             Contact <span className="text-green-600">Us</span>
           </h2>
-          <hr className="w-1/4 mb-4 h-1 border-0 opacity-100 bg-gradient-to-l from-transparent to-green-600 rounded-lg" />
+          <hr className="w-1/4 mb-4 h-1 border-0 opacity-100 bg-gradient-to-l from-transparent to-green-600 rounded-lg" aria-hidden="true" />
           <p className="text-gray-100 mb-8 text-center">
             We&apos;re here to help! If you have any questions, concerns, or
             need assistance, please feel free to reach <br /> out to us using
@@ -747,6 +899,7 @@ export default function GigWorkLandingPage() {
                     height="18"
                     viewBox="0 0 21 18"
                     fill="none"
+                    aria-hidden="true"
                   >
                     <path
                       d="M11.7501 4.99999C14.0284 4.99999 15.0001 5.89699 15.0001 7.99999H17.1668C17.1668 4.77499 15.2439 2.99999 11.7501 2.99999V4.99999ZM15.4573 10.443C15.2491 10.2683 14.9756 10.1752 14.6944 10.1832C14.4133 10.1912 14.1465 10.2998 13.9504 10.486L11.358 12.947C10.734 12.837 9.47948 12.476 8.18814 11.287C6.89681 10.094 6.50573 8.93299 6.38981 8.361L9.05373 5.96699C9.25567 5.78612 9.37346 5.53982 9.38215 5.2802C9.39085 5.02059 9.28977 4.76804 9.10031 4.57599L5.09739 0.512995C4.90786 0.320352 4.64443 0.203499 4.36306 0.187255C4.08169 0.17101 3.80454 0.256653 3.59048 0.425995L1.23964 2.28699C1.05235 2.46051 0.940556 2.69145 0.925476 2.93599C0.909226 3.18599 0.599393 9.108 5.57406 13.702C9.91389 17.707 15.3501 18 16.8472 18C17.0661 18 17.2004 17.994 17.2361 17.992C17.501 17.9783 17.7511 17.8747 17.9381 17.701L19.9531 15.53C20.1367 15.3325 20.2297 15.0768 20.2123 14.817C20.1949 14.5573 20.0685 14.3141 19.86 14.139L15.4573 10.443Z"
@@ -835,9 +988,10 @@ export default function GigWorkLandingPage() {
         </section>
       </section>
       {/* Footer */}
-      <section>
+      <footer>
         <FooterSection />
-      </section>
-    </div>
+      </footer>
+      </div>
+    </>
   );
 }

@@ -165,7 +165,7 @@ export default function PartnersPage() {
   const faqs = [
     {
       question: "How much can I earn as a Gigwork partner?",
-      answer: "You earn a commission for every business you successfully onboard. There's no limit to how many businesses you can bring or how much you can earn. The more you help, the more you earn!"
+      answer: "You earn a commission for every business you successfully onboard. There's no limit to how many businesses you can bring or how much you can earn. The more you help, the more you earn! As 20% of the 1500 we charge for each business goes through you."
     },
     {
       question: "Do I need any prior experience?",
@@ -298,12 +298,6 @@ export default function PartnersPage() {
                   allowFullScreen
                 ></iframe>
               </div>
-            </div>
-            <div className="text-center mt-6">
-              <p className="text-gray-600">
-                <PlayCircle className="inline mr-2" size={20} />
-                Watch our complete tutorial to get started
-              </p>
             </div>
           </div>
 

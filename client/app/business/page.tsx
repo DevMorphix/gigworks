@@ -168,7 +168,7 @@ export default function TutorialPage() {
                 onClick={handleJoinClick}
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition duration-300"
               >
-                Get Started
+                Create Profile
               </button>
             </div>
 
@@ -203,7 +203,7 @@ export default function TutorialPage() {
                   onClick={handleJoinClick}
                   className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition duration-300 w-full"
                 >
-                  Get Started
+                  Create Profile
                 </button>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function TutorialPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-br from-green-50 to-white">
+      <section className="pt-32 pb-12 px-4 bg-gradient-to-br from-green-50 to-white">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center">
             <div className="inline-block bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
@@ -229,7 +229,7 @@ export default function TutorialPage() {
       </section>
 
       {/* Video Section */}
-      <section className="py-12 px-4 bg-white">
+      <section className="pb-12 px-4 bg-white">
         <div className="container mx-auto max-w-5xl">
           <div className="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl">
             <div className="aspect-video relative">
@@ -248,8 +248,40 @@ export default function TutorialPage() {
               Watch our complete tutorial (5 minutes)
             </p>
           </div>
+          <div className="text-center mt-8">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+              <button 
+                onClick={handleJoinClick}
+                className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-lg transition duration-300 text-lg font-semibold shadow-lg hover:shadow-xl inline-flex items-center"
+              >
+                Join as Partner Now
+                <ArrowRight className="ml-2" size={20} />
+              </button>
+              <a
+                href="#benefits"
+                className="border-2 border-green-600 text-green-600 hover:bg-green-50 px-10 py-4 rounded-lg transition duration-300 text-lg font-semibold"
+              >
+                Learn More
+              </a>
+            </div>
+            {/* <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="text-green-500" size={20} />
+                <span>Grow your business</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="text-green-500" size={20} />
+                <span>Touch on the client</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="text-green-500" size={20} />
+                <span>Increse you cash flow</span>
+              </div>
+            </div> */}
+          </div>
         </div>
       </section>
+      
 
       {/* Quick Benefits */}
       <section className="py-16 px-4 bg-gray-50">
@@ -389,7 +421,7 @@ export default function TutorialPage() {
             Ready to Get Started?
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Join hundreds of businesses already growing with Gigwork. Create your profile today!
+            Join thousands of businesses already growing with Gigwork. Create your profile today!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 

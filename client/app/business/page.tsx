@@ -242,19 +242,13 @@ export default function TutorialPage() {
               ></iframe>
             </div>
           </div>
-          <div className="text-center mt-6">
-            <p className="text-gray-600">
-              <PlayCircle className="inline mr-2" size={20} />
-              Watch our complete tutorial (5 minutes)
-            </p>
-          </div>
           <div className="text-center mt-8">
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <button 
                 onClick={handleJoinClick}
                 className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-lg transition duration-300 text-lg font-semibold shadow-lg hover:shadow-xl inline-flex items-center"
               >
-                Join as Partner Now
+                Create Your Profile
                 <ArrowRight className="ml-2" size={20} />
               </button>
               <a

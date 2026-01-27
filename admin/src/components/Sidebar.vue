@@ -232,7 +232,8 @@ export default {
         },
         logout() {
             // Clear the token from cookies by setting it to expire in the past
-            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            // document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            localStorage.removeItem('token');
 
             // Redirect to the login page
             this.$router.push('/login');

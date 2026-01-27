@@ -120,7 +120,8 @@
                     });
                     
                     if (response && response.data && response.data.token) {
-                        document.cookie = `token=${response.data.token}; max-age=864000`;
+                        // document.cookie = `token=${response.data.token}; max-age=864000`;
+                        localStorage.setItem('token', response.data.token);
                         this.$router.push('/');
                     } else {
                         this.error = "Invalid response from server. Please try again.";

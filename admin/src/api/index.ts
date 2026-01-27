@@ -6,6 +6,20 @@ import axios from 'axios';
 const BASE_URL = import.meta.env.VITE_BASE_URL; 
 // const BASE_URL = "http://127.0.0.1:8787/api/v1";
 
+
+axios.interceptors.request.use((config => {
+    const token = localStorage.getItem('token'); 
+    if (token) {
+        config.headers = {
+            ...config.headers,
+            'Authorization': `Bearer ${token}`,
+        };
+    }
+    return config;
+}));    
+
+
+
 // login
 export const adminLogin = async (data:any) => {  
     const response = await axios.post(`${BASE_URL}/admin/login`, data);

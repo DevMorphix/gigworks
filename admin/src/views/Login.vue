@@ -93,7 +93,7 @@
             };
         },
         mounted() {
-            if (document.cookie.includes('token')) {
+            if (localStorage.getItem('token')) {
                 this.$router.push('/');
             }
         },

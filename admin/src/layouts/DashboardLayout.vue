@@ -30,10 +30,8 @@
         },
         methods: {
             checkAuthentication() {
-                // Check if token exists in cookies
-                const hasToken = document.cookie.split(';').some(cookie => 
-                    cookie.trim().startsWith('token=')
-                );
+                // Check if token exists in localStorage
+                const hasToken = localStorage.getItem('token') !== null;
                 
                 if (!hasToken) {
                     console.log('No authentication token found. Redirecting to login...');

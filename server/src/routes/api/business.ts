@@ -720,7 +720,7 @@ router.delete("/:id/license/:license_id", verifyToken, async (c) => {
  * @example /api/v1/business/update-status
  **/
 
-router.post("/update-status", async (c) => {
+router.post("/update-status", verifyToken, async (c) => {
   try {
     const { profileId, status } = await c.req.json();
     const profile = await updateProfileStatus(profileId, status);

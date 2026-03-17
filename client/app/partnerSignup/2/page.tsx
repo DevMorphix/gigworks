@@ -74,7 +74,8 @@ const BankDetailsForm = () => {
           branch_name: formData.branch,
           account_holder: formData.accountHolderName,
           upi_id: formData.upiId
-        }
+        },
+        identityProof: previousData.identityProof
       };
 
       const response = await CreatePartner(finalData);

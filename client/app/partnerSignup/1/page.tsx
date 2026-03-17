@@ -154,11 +154,7 @@ const ProfileForm = () => {
         partner: {
           address: formData.address,
           avatar: formData.profileImage || "https://fastly.picsum.photos/id/535/200/300.jpg?hmac=iN2CqXJjjbBwtMlTUpWyZV6xFRfk_-XSDYRSk2eFbsQ",
-        },
-        identityProof: {
-            proof_type: formData.idProof,
-            proof_number: formData.uploadId.split('/').pop() || '', // Extract filename from path
-            proof_url: formData.uploadId
+          identityProof: formData.uploadId
         }
       };
 

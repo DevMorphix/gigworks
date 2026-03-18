@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CreatePartner } from "../../api";
 import { toast } from 'react-hot-toast';
+import { i } from "framer-motion/client";
 
 interface BankDetails {
   accountHolderName: string;
@@ -74,7 +75,8 @@ const BankDetailsForm = () => {
           branch_name: formData.branch,
           account_holder: formData.accountHolderName,
           upi_id: formData.upiId
-        }
+        },
+        identityProof: previousData.identityProof
       };
 
       const response = await CreatePartner(finalData);

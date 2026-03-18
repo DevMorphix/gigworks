@@ -1,6 +1,6 @@
 
 import { Env } from "hono";
-import { queryGeminiService } from "../config/gemini";
+import { queryGeminiService, queryCloudflareAI } from "../config/gemini";
 import { getProfilesBySubCategoryOption } from "../services/profile";
 import { getAllSubCategoryOptions, getSubCategoryOptionByName } from "../services/subCategoryOption";
 
@@ -23,19 +23,25 @@ export const processCheckService = async (message: string, env: Env): Promise<st
         }
 
         const prompt = `
-            You are a smart service classifier for a platform that offers over 250 services.
+                        You are a smart service classifier for a platform with 250+ services.
 
-            Based on the user message below, rank the **top 3 most appropriate** services from this list:
-            ${JSON.stringify(allOptions)}
+                        Based on the user message below, return EXACTLY 3 most relevant services from this list:
+                        ${JSON.stringify(allOptions)}
 
-            Only return the **exact matching service names** from the list above as an array of up to 3 items. If you can't confidently find any matches, return "NOT_FOUND".
+                        Rules:
+                        - You MUST return EXACTLY 3 items, no more, no less
+                        - Return ONLY a raw JSON array of exact service name strings
+                        - Use only names from the list above
+                        - If only 1 or 2 match, fill remaining spots with the next closest services
+                        - If no match at all, return exactly: NOT_FOUND
 
-            User message: "${message}"
-        `.trim();
+                        User message: "${message}"
+            `.trim();
 
         try {            
 
-            const response = await queryGeminiService(prompt, env);
+            // const response = await queryGeminiService(prompt, env);
+            const response = await queryCloudflareAI(prompt, env);
 
             if (response && typeof response === "string") {
 

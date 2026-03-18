@@ -21,12 +21,13 @@ import { handleCron } from './cron';
 
 
 
-type Bindings = {
+export type Bindings = {
     TURSO_URL : string,
     TURSO_AUTH_TOKEN : string,
     JWT_TOKEN_SECRET : string,
     JWT_TOKEN_EXPIRY : string,
     KV_STORE: KVNamespace,
+    AI:Ai,
 };
 
 const app = new Hono<{ Bindings: Bindings }>();

@@ -177,7 +177,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                     />
                   </div>
                   <span className="text-center font-bold">{s.title}</span>
-                  <div className="text-gray-600">
+                  <div className="text-gray-600 max-w-xs text-center mx-2">
                     <span>
                       {/* Mode: {s.type === "both" ? "offline/online" : s.type} */}
                       {s.subCategoryName ? `  ${s.subCategoryName} | ${s.subCategoryOptionName}` : ""}
